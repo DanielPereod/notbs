@@ -18,7 +18,6 @@ export function CommandPrompt() {
     const inputCmd = e.target.value;
     const foundCommands = commands.filter((cmd: AppCommand) =>  cmd.name.toLowerCase().includes(inputCmd.toLowerCase()))
     setFoundCommands(() => foundCommands)
-    console.log(foundCommands)
   }
 
   async function handleCommandClick(id: string) {

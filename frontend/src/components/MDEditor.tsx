@@ -1,16 +1,13 @@
-import { FormEvent, TextareaHTMLAttributes, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { FormEvent, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../App.css";
 import { UpdateFileByDirectory } from "../../wailsjs/go/main/App";
-import { marked } from "marked";
+import Markdown from "marked-react";
 import { useHotkeys, HotkeysProvider } from "react-hotkeys-hook";
-import { hotkeysDict } from "../config/hotkeys";
-import { useDebounce } from "../helpers/debounce";
-import { Note } from "../types/Note";
 import { NoteContext } from "../App";
+import { MarkdownRender } from "./MarkdownRender";
 
 export function MDEditor() {
-  const { note, setNote } = useContext(NoteContext);
-  const [formatedNote, setFormatedNote] = useState<Note>({ Path: "", Body: "", Title: "" }); //TODO: set default note from home
+  const { note, setNote } = useContext(NoteContext); //TODO: set default note from home
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -25,15 +22,6 @@ export function MDEditor() {
     },
     { enableOnFormTags: true }
   );
-
-  async function transformToMarkdown(body: string): Promise<Note> {
-    const newText = await marked.parse(body);
-
-    return {
-      ...note,
-      Body: newText,
-    };
-  }
 
   function adjustHeight() {
     if (textareaRef && textareaRef.current) {
@@ -64,13 +52,7 @@ export function MDEditor() {
   }, [currentDisplay]);
 
   useEffect(() => {
-    const transformNote = async () => {
-      const formattedNote = await transformToMarkdown(note.Body);
-      setFormatedNote(formattedNote);
-    };
     UpdateFileByDirectory(note.Path, note.Path, note.Body);
-
-    transformNote();
     //TODO: debounce
   }, [note?.Body]);
 
@@ -91,15 +73,7 @@ export function MDEditor() {
             value={note.Body}
           ></textarea>
         ) : (
-          <div
-            className="markdown-editor"
-            dangerouslySetInnerHTML={{
-              __html:
-                formatedNote?.Body.trim().length == 0
-                  ? `${hotkeysDict.toggle_display} to start typing...`
-                  : formatedNote?.Body,
-            }}
-          ></div>
+          <MarkdownRender />
         )}
       </div>
     </HotkeysProvider>
