@@ -1,0 +1,62 @@
+:root{
+  --editor-font-family: "Roboto"
+}
+
+:root {
+  --bgr: #ddc;
+  --bgr-200: rgb(194, 194, 181);
+
+  --txt: #456;
+  --accent: #456
+}
+/* :root.dark {
+  --bgr: #222;
+  --txt: #844;
+} */
+
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  src: local(""), url("assets/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+}
+
+html {
+  background-color: var(--bgr);
+  text-align: center;
+  color: var(--txt);
+  min-height: 100vh;
+
+}
+
+body {
+  margin: 0;
+  color: var(--txt);
+  font-family: var(--editor-font-family);
+  min-height: 100vh;
+
+}
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: var(--accent) var(--bgr);
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--bgr);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 5px;
+    border: 2px solid var(--bgr);
+  }
+
+
